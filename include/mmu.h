@@ -7,6 +7,8 @@
 
 typedef struct Variable {
     std::string name;
+    std::string type;
+    std::vector <char*> values;
     int virtual_address;
     int size;
 } Variable;
@@ -27,7 +29,11 @@ public:
     ~Mmu();
 
     uint32_t createProcess();
+    Process* getProcess(uint32_t);
+    Variable* getVariable(uint32_t, std::string);
+    void createVariable(uint32_t, std::string, std::string, int);
     void print();
 };
+
 
 #endif // __MMU_H_
