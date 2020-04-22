@@ -51,6 +51,11 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     var->type = type;
     var->size = sizes[type] * num;
     
+    for (int i = 0; i < num; i++)
+    {
+        var->values.push_back(NULL);
+    }
+    
     getProcess(pid)->variables.push_back(var);
 }
 
@@ -72,15 +77,14 @@ Variable* Mmu::getVariable(uint32_t pid, std::string name)
 {
     Process *proc = getProcess(pid);
     
-    if (proc = NULL)
+    if (proc == NULL)
     {
         std::cout << "Invalid process ID" << std::endl;
         return NULL;
     }      
-    //segmentation fault occurs when proc->variables.size() is called
-    for (int i = 0; i < proc->variables.size(); i++)
+    
+    for (int i = 0; i < getProcess(pid)->variables.size(); i++)
     {
-        std::cout << i << std::endl;  
         if (proc->variables[i]->name.compare(name) == 0)
         {
             return proc->variables[i];
