@@ -1,4 +1,5 @@
 #include "mmu.h"
+#include <map>
 
 Mmu::Mmu(int memory_size)
 {
@@ -8,24 +9,84 @@ Mmu::Mmu(int memory_size)
 
 Mmu::~Mmu()
 {
-    
 }
 
 uint32_t Mmu::createProcess()
 {
     Process *proc = new Process();
     proc->pid = _next_pid;
-
+    
+    /*
     Variable *var = new Variable();
     var->name = "<FREE_SPACE>";
     var->virtual_address = 0;
     var->size = _max_size;
     proc->variables.push_back(var);
+    */
 
     _processes.push_back(proc);
 
     _next_pid++;
     return proc->pid;
+}
+
+void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int num)
+{
+    if (getProcess(pid) == NULL)
+    {
+        std::cout << "Invalid process ID." << std::endl;
+    }
+    //what variables should be supported?
+    //int, long, float, double, char
+    std::map<std::string, int> sizes;
+    sizes["int"] = 4;
+    sizes["long"] = 8;
+    sizes["float"] = 4;
+    sizes["double"] = 8;
+    sizes["char"] = 1;
+    
+    Variable *var = new Variable();
+    
+    var->name = name;
+    var->type = type;
+    var->size = sizes[type] * num;
+    
+    getProcess(pid)->variables.push_back(var);
+}
+
+//return process with parameter PID, NULL otherwise
+Process* Mmu::getProcess(uint32_t pid)
+{
+    for (int i = 0; i< _processes.size(); i++)
+    {
+        if (_processes[i]->pid == pid)
+        {
+            return _processes[i];
+        }
+    }
+    return NULL;
+}
+
+//return variable in process with parameter pid that has parameter name, NULL otherwise
+Variable* Mmu::getVariable(uint32_t pid, std::string name)
+{
+    Process *proc = getProcess(pid);
+    
+    if (proc = NULL)
+    {
+        std::cout << "Invalid process ID" << std::endl;
+        return NULL;
+    }      
+    //segmentation fault occurs when proc->variables.size() is called
+    for (int i = 0; i < proc->variables.size(); i++)
+    {
+        std::cout << i << std::endl;  
+        if (proc->variables[i]->name.compare(name) == 0)
+        {
+            return proc->variables[i];
+        }
+    }
+    return NULL;
 }
 
 void Mmu::print()
