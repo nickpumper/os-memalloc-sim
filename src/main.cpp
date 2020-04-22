@@ -21,6 +21,9 @@ int main(int argc, char **argv)
     // Create physical 'memory'
     uint8_t *memory = new uint8_t[67108864]; // 64 MB (64 * 1024 * 1024)
 
+    // create MMU
+    Mmu * mmu = new Mmu(page_size); 
+
     // Prompt loop
     std::string command;
     std::cout << "> ";
@@ -47,8 +50,10 @@ int main(int argc, char **argv)
         if (!command.empty()) {
             std::string create = "create";
             if (commands[0].compare(create) == 0) {
-                std::cout << "Creating a new process.\n";
-                
+                // create the new process
+                uint32_t pid = mmu->createProcess();
+                std::cout << pid << "\n"; // print the PID 
+
             } // if create
         } // if !command.empty     
 
