@@ -26,17 +26,40 @@ int main(int argc, char **argv)
     std::cout << "> ";
     std::getline (std::cin, command);
     while (command != "exit") {
-        // Handle command
-        // TODO: implement this!
+        
+        // Parse apart the command
+        char * tok;
+        char* cmd = (char *) command.c_str();
+        std::vector<std::string> commands;
+        int num_commands = 0;
+        std::string command_token;
+        
+        tok = strtok (cmd," ");
+        while (tok != NULL)
+        {
+            commands.push_back(tok);
+            tok = strtok (NULL, " ");
+            // std::cout << commands[num_commands] << "\n";
+            num_commands++;
+        }
+
+        // handle the command
+        if (!command.empty()) {
+            std::string create = "create";
+            if (commands[0].compare(create) == 0) {
+                std::cout << "Creating a new process.\n";
+                
+            } // if create
+        } // if !command.empty     
 
         // Get next command
         std::cout << "> ";
         std::getline (std::cin, command);
-    }
+    } // while (command != "exit")
 
 
     return 0;
-}
+} // main
 
 void printStartMessage(int page_size)
 {

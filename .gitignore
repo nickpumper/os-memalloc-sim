@@ -1,0 +1,6 @@
+
+obj/main.o
+obj/mmu.o
+obj/pagetable.o
+bin/memsim
+.vscode/settings.json
