@@ -103,17 +103,17 @@ int main(int argc, char **argv)
             uint32_t offset = std::stoi(token); //convert token to int
 
             //set values
-            //currently a segmentation fault when calling getVariable
             Variable *var = mmu.getVariable(pid, var_name);
             int index = offset;
             token = strtok(NULL, " "); 
-            std::cout << "got to strtok" << std::endl;  
             if (var != NULL)
             {
-                while (token != 0)
+                while (token != NULL && index < var->values.size())
                 {
-                    var->values[index] = token;
+                    var->values.at(index) = token;
+                    std::cout << "value " << index << " set to " << var->values[index] << std::endl;
                     index++;
+                    token = strtok(NULL, " "); 
                 } 
             }
             
