@@ -37,13 +37,11 @@ int main(int argc, char **argv)
     //get command 
     token = strtok(strdup(command.c_str()), " ");  
     while (command != "exit") {
-        // Handle command
-        // TODO: implement this!
-        
+
         //physical memory stored in memory[] (main.cpp)
         //page table (virtual memory) stored in std::map<std::string, int> _table (pagetable.h, private)
         //processes stored in std::vector<Process*> _processes (mmu.h, private)
-            //process variables stored in std::vector<Variable*> variables; (mmu.h)
+        //process variables stored in std::vector<Variable*> variables; (mmu.h)
         
         if (strcmp(token, "create")==0)
         {
@@ -78,11 +76,15 @@ int main(int argc, char **argv)
             //get <number_of_elements>
             token = strtok(NULL, " "); 
             uint32_t number_of_elements = std::stoi(token); //convert token to int
-            
+
             //create variable for process based on tokens
+            // this will print the virtual mem addr 
             mmu.createVariable(pid, var_name, data_type, number_of_elements);
-            
-            //allocate memory                     
+
+            // allocate memory
+            // page_number isnt right yet: doesn't account for when we have enough vars that it foes over the page size
+            int page_number = mmu.getProcess(pid)->variables.size() + 1;
+            pagetable.addEntry(pid, page_number);
         }
         else if (strcmp(token, "set")==0)
         {

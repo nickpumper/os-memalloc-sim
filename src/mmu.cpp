@@ -36,6 +36,9 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     {
         std::cout << "Invalid process ID." << std::endl;
     }
+
+    int num_vars_in_proc = getProcess(pid)->variables.size();
+
     //what variables should be supported?
     //int, long, float, double, char
     std::map<std::string, int> sizes;
@@ -51,10 +54,19 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     var->type = type;
     var->size = sizes[type] * num;
     
+    
     for (int i = 0; i < num; i++)
     {
         var->values.push_back(NULL);
     }
+
+    // determine virtual address
+    var->virtual_address = num_vars_in_proc + 1; // first part is the page number
+    
+    // we need to get the page size over here
+    // var->virtual_address = var->virtual_address << log2()
+
+    std::cout << var->virtual_address << std::endl; // required print
     
     getProcess(pid)->variables.push_back(var);
 }
