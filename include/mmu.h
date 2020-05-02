@@ -33,6 +33,7 @@ public:
     Variable* getVariable(uint32_t, std::string);
     void createVariable(uint32_t, std::string, std::string, int);
     void print();
+    void deleteProcess(uint32_t pid);
 };
 
 

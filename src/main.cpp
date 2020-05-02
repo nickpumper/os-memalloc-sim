@@ -135,14 +135,30 @@ int main(int argc, char **argv)
         else if (strcmp(token, "free")==0)
         {
             //free <PID> <var_name> 
-            //Deallocate memory on the heap that is associated with <var_name>
-        }
+            //Deallocate memory on the heap that is associated with <var_name>.
+            
+            //get <PID> 
+            token = strtok(NULL, " "); 
+            uint32_t pid = std::stoi(token); //convert token to int    
+
+            // get variable name
+            std::string var_name = strtok(NULL, " "); 
+
+        } // "free"
         else if (strcmp(token, "terminate")==0)
         {
             //terminate <PID>
             //Kill the specified process
+
+            //get <PID> 
+            token = strtok(NULL, " "); 
+            uint32_t pid = std::stoi(token); //convert token to int 
+
+            mmu.deleteProcess(pid); // delete the process
+
+            // delete all pages associated with it
                 
-        }
+        } // "terminate"
         else if (strcmp(token, "print")==0)
         {
             //print <object>
@@ -176,7 +192,7 @@ int main(int argc, char **argv)
                 //invalid object
                 std::cout << "Error: Invalid object." << std::endl;
             }    
-        }
+        } // "print"
         else
         {
             std::cout << "Error: not a valid command." << std::endl;
