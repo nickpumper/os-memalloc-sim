@@ -61,12 +61,14 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     }
 
     // determine virtual address
+
     var->virtual_address = num_vars_in_proc + 1; // first part is the page number
     
+    // required print: if not TEXT, GLOBALS, or STACK, then print virtual addr
+    
+
     // we need to get the page size over here
     // var->virtual_address = var->virtual_address << log2()
-
-    std::cout << var->virtual_address << std::endl; // required print
     
     getProcess(pid)->variables.push_back(var);
 } // createVariable
@@ -113,9 +115,17 @@ void Mmu::print()
     std::cout << "------+---------------+--------------+------------" << std::endl;
     for (i = 0; i < _processes.size(); i++)
     {
+        uint32_t pid = _processes[i]->pid;
+
         for (j = 0; j < _processes[i]->variables.size(); j++)
         {
             // TODO: print all variables (excluding <FREE_SPACE> entries)
-        }
-    }
-}
+            //print PID
+            std:: cout << pid << "  | ";
+            //print name
+            std::cout << _processes[i]->variables[j]->name;
+
+            std::cout << std::endl; // end line
+        } // for j
+    } // for i
+} // print

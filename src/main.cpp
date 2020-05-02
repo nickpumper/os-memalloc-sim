@@ -53,8 +53,6 @@ int main(int argc, char **argv)
             token = strtok(NULL, " "); 
             int data_size = std::stoi(token);
 
-            std::cout << "text is: " << text_size << " and data is " << data_size << std::endl;
-
             //Initializes a new process
             uint32_t pid =  mmu.createProcess();
             std::cout << pid << std::endl; // required print
@@ -69,7 +67,7 @@ int main(int argc, char **argv)
             mmu.createVariable(pid, "<GLOBALS>", "char", data_size);
             mmu.createVariable(pid, "<STACK>", "char", stack_size_constant);
             
-        }
+        } // "create"
         else if (strcmp(token, "allocate")==0)
         {
             //allocate <PID> <var_name> <data_type> <number_of_elements>
@@ -100,7 +98,7 @@ int main(int argc, char **argv)
             // page_number isnt right yet: doesn't account for when we have enough vars that it foes over the page size
             int page_number = mmu.getProcess(pid)->variables.size() + 1;
             pagetable.addEntry(pid, page_number);
-        }
+        } // "allocate"
         else if (strcmp(token, "set")==0)
         {
             //set <PID> <var_name> <offset> <value_0> <value_1> <value_2> ... <value_N>
