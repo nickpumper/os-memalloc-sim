@@ -42,11 +42,9 @@ int main(int argc, char **argv)
         //processes stored in std::vector<Process*> _processes (mmu.h, private)
         //process variables stored in std::vector<Variable*> variables; (mmu.h)
         
-        // this should be done
+        // this should be done now
         if (strcmp(token, "create")==0)
         {
-            //create <text_size> <data_size>
-
             // get command line variables
             token = strtok(NULL, " "); 
             int text_size = std::stoi(token);
