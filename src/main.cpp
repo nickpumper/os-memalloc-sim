@@ -16,18 +16,17 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // Print opening instuction message
+    
     int page_size = std::stoi(argv[1]);
-    printStartMessage(page_size);
+    const int stack_size_constant = 65536; // in bytes (as per instructions)
 
     // Create physical 'memory'
     uint8_t *memory = new uint8_t[67108864]; // 64 MB of RAM (64 * 1024 * 1024)
     
-    // Create virtual 'memory'
-    PageTable pagetable = PageTable(page_size); 
-    
-    // Create MMU
-    Mmu mmu = Mmu(67108864);
+    PageTable pagetable = PageTable(page_size);  // Create virtual 'memory'
+    Mmu mmu = Mmu(67108864); // Create MMU
+
+    printStartMessage(page_size); // Print opening instuction message
 
     // Prompt loop
     std::string command;
@@ -43,17 +42,33 @@ int main(int argc, char **argv)
         //processes stored in std::vector<Process*> _processes (mmu.h, private)
         //process variables stored in std::vector<Variable*> variables; (mmu.h)
         
+        // this should be done
         if (strcmp(token, "create")==0)
         {
             //create <text_size> <data_size>
-                
+
+            // get command line variables
+            token = strtok(NULL, " "); 
+            int text_size = std::stoi(token);
+            token = strtok(NULL, " "); 
+            int data_size = std::stoi(token);
+
+            std::cout << "text is: " << text_size << " and data is " << data_size << std::endl;
+
             //Initializes a new process
-            //Prints the PID
-            std::cout << mmu.createProcess() << std::endl;
+            uint32_t pid =  mmu.createProcess();
+            std::cout << pid << std::endl; // required print
                 
+            // the following allocs must be done in this order: 
             //allocate <text_size> bytes of memory with variable name <TEXT>
             //allocate <data_size> bytes of memory with variable name <GLOBALS>
             //allocate 65536 bytes of memory with variable name <STACK>
+
+            // DOUCLE CHECK THE TYPE
+            mmu.createVariable(pid, "<TEXT>", "char", text_size); 
+            mmu.createVariable(pid, "<GLOBALS>", "char", data_size);
+            mmu.createVariable(pid, "<STACK>", "char", stack_size_constant);
+            
         }
         else if (strcmp(token, "allocate")==0)
         {

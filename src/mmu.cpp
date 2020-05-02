@@ -69,7 +69,7 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     std::cout << var->virtual_address << std::endl; // required print
     
     getProcess(pid)->variables.push_back(var);
-}
+} // createVariable
 
 //return process with parameter PID, NULL otherwise
 Process* Mmu::getProcess(uint32_t pid)
