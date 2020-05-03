@@ -22,10 +22,11 @@ class Mmu {
 private:
     uint32_t _next_pid;
     int _max_size;
+    int _page_size;
     std::vector<Process*> _processes;
 
 public:
-    Mmu(int memory_size);
+    Mmu(int memory_size, int _page_size);
     ~Mmu();
 
     uint32_t createProcess();

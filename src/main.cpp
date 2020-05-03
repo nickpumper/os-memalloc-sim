@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     uint8_t *memory = new uint8_t[67108864]; // 64 MB of RAM (64 * 1024 * 1024)
     
     PageTable pagetable = PageTable(page_size);  // Create virtual 'memory'
-    Mmu mmu = Mmu(67108864); // Create MMU
+    Mmu mmu = Mmu(67108864, page_size); // Create MMU
 
     printStartMessage(page_size); // Print opening instuction message
 

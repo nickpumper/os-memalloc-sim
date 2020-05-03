@@ -1,12 +1,14 @@
 #include "mmu.h"
 #include <map>
+#include <cmath>
 
-Mmu::Mmu(int memory_size)
+Mmu::Mmu(int memory_size, int page_size)
 {
     _next_pid = 1024;
     _max_size = memory_size;
+    _page_size = page_size;
 }
-
+ 
 Mmu::~Mmu()
 {
 }
@@ -37,7 +39,7 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
         std::cout << "Invalid process ID." << std::endl;
     }
 
-    int num_vars_in_proc = getProcess(pid)->variables.size();
+    Process * process = getProcess(pid);
 
     //what variables should be supported?
     //int, long, float, double, char
@@ -61,8 +63,15 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     }
 
     // determine virtual address (WORK IN PROGRESS)
+    int offset_bits = log2(_page_size);
+    int sum_var_sizes = 0;
+    for (int i =0; i < process->variables.size(); i++) {
+        sum_var_sizes = sum_var_sizes + process->variables[i]->size;
+    } // for i
 
-    var->virtual_address = num_vars_in_proc + 1;// WIP
+
+
+    var->virtual_address = 0; // WIP
     // var->virtual_address = var->virtual_address << log2()
 
 

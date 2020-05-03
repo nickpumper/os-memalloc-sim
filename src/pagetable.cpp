@@ -19,7 +19,7 @@ void PageTable::addEntry(uint32_t pid, int page_number)
     // TODO: implement this!
     int frame = 0; 
     _table[entry] = frame;
-}
+} // addEntry
 
 int PageTable::getPhysicalAddress(uint32_t pid, int virtual_address)
 {
@@ -47,7 +47,7 @@ int PageTable::getPhysicalAddress(uint32_t pid, int virtual_address)
     }
 
     return address;
-}
+} // getPhysicalAddress
 
 void PageTable::print()
 {
@@ -60,4 +60,4 @@ void PageTable::print()
     {
         // TODO: print all pages
     }
-}
+} // print
