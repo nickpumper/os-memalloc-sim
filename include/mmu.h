@@ -16,6 +16,7 @@ typedef struct Variable {
 typedef struct Process {
     uint32_t pid;
     std::vector<Variable*> variables;
+    int num_pages;
 } Process;
 
 class Mmu {
@@ -26,7 +27,7 @@ private:
     std::vector<Process*> _processes;
 
 public:
-    Mmu(int memory_size, int _page_size);
+    Mmu(int memory_size, int _page_size, uint8_t* memory);
     ~Mmu();
 
     uint32_t createProcess();
