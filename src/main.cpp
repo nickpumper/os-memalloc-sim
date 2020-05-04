@@ -129,8 +129,6 @@ int main(int argc, char **argv)
                     token = strtok(NULL, " "); 
                 } 
             }
-            
-            
         }
         else if (strcmp(token, "free")==0)
         {
@@ -171,17 +169,17 @@ int main(int argc, char **argv)
             {
                 //print mmu memory table
                 mmu.print();
-            }
+            } // if "mmu"
             else if (strcmp(token, "page")==0)
             {
                 //print page table (do not need to print anything for free frames)
                 pagetable.print();
-            }
+            } // if "page"
             else if (strcmp(token, "processes")==0)
             {
                 //print a list of PIDs for processes that are still running
-                    
-            }
+                mmu.printProcesses();
+            } // if "processes"
             
             /*
             *   if <object> is a "<PID>:<var_name>...", print the value of the variable(s) for that process

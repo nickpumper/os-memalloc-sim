@@ -124,6 +124,7 @@ Variable* Mmu::getVariable(uint32_t pid, std::string name)
     return NULL;
 } // getVariable
 
+// print the mmu
 void Mmu::print()
 {
     int i, j;
@@ -152,6 +153,13 @@ void Mmu::print()
         } // for j
     } // for i
 } // print
+
+//print the processes 
+void Mmu::printProcesses () {
+    for (int i =0; i < _processes.size(); i++) {
+        std::cout << _processes[i]->pid << std::endl;
+    }
+} // printProcesses
 
 // deletes the process
 void Mmu::deleteProcess(uint32_t pid) {
