@@ -95,7 +95,7 @@ int main(int argc, char **argv)
             // allocate memory
             // page_number isnt right yet: doesn't account for when we have enough vars that it foes over the page size
             int page_number = mmu.getProcess(pid)->variables.size() + 1;
-            // pagetable.addEntry(pid, page_number);
+            pagetable.addEntry(pid, page_number);
         } // "allocate"
         else if (strcmp(token, "set")==0)
         {
@@ -207,8 +207,8 @@ int main(int argc, char **argv)
                     std::cout << std::endl;
                 } else {
                     std::cout << "Error: Invalid object." << std::endl;
-                }
-            } // //if <object> is a "<PID>:<var_name>...",
+                } // else
+            } // else if
             else
             {
                 //invalid object

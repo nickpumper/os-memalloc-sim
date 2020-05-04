@@ -4,13 +4,18 @@
 PageTable::PageTable(int page_size)
 {
     _page_size = page_size;
+
     //array of ints that is the same size as the number of frames in the system
     //used to keep track of which frames are free
     //1 = taken, free otherwise
     int size;
-    int i;
     size = 67108864 / _page_size;
-    std::cout << "Size is " << size << std::endl;
+    //std::cout << "Size is " << size << std::endl;
+    
+    //we need to populate frames[]
+    for (int i = 0 ; i < size; i++) {
+        frames.push_back(0);
+    } // for
 }
 
 PageTable::~PageTable()
@@ -19,18 +24,14 @@ PageTable::~PageTable()
 
 // adds a new <pid|page #, frame #> to the table, used when a process needs more memory
 void PageTable::addEntry(uint32_t pid, int page_number)
-{
-    //done
-    
+{    
     // Combination of pid and page number act as the key to look up frame number
     std::string entry = std::to_string(pid) + "|" + std::to_string(page_number);
 
     // Find free frame
-    // TODO: implement this!
     //table: <entry, frame #>
-    
     int i;
-    for (i = 0; i < (67108864 / _page_size); i++)
+    for (i = 0; i < frames.size(); i++)
     {
         if (frames[i] != 1)
         {
