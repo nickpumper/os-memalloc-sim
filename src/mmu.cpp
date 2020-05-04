@@ -1,7 +1,6 @@
 #include "mmu.h"
 #include <map>
 #include <cmath>
-#include <cstring>
 
 Mmu::Mmu(int memory_size, int page_size)
 {
@@ -131,23 +130,23 @@ void Mmu::print()
 
     std::cout << " PID  | Variable Name | Virtual Addr | Size" << std::endl;
     std::cout << "------+---------------+--------------+------------" << std::endl;
-    for (i = 1024; i < _next_pid; i++)
+    for (i = 0; i < _processes.size(); i++)
     {
-        uint32_t pid = i;
-        Process * process = getProcess(pid);
+        uint32_t pid = _processes[i]->pid;
 
-        for (j = 0; j < process->variables.size(); j++)
+        for (j = 0; j < _processes[i]->variables.size(); j++)
         {
             // print all variables (excluding <FREE_SPACE> entries)
+            Variable * var = _processes[i]->variables[j];
 
             //print PID
-            std:: cout << (process->pid) << "  | ";
+            std:: cout << pid << "  | ";
             //print name
-            std::cout << process->variables[j]->name << "   |";
+            std::cout << var->name << "   |";
             // print virtual addr
-            std::cout << "   0x" << std::hex << process->variables[j]->virtual_address << " |";
+            std::cout << "   0x" << std::hex << var->virtual_address << std::dec << " |";
             // print size
-            std::cout << "   " << process->variables[j]->size;
+            std::cout << "   " << var->size;
 
             std::cout << std::endl;
         } // for j
