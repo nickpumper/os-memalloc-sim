@@ -180,11 +180,30 @@ int main(int argc, char **argv)
                 //print a list of PIDs for processes that are still running
                 mmu.printProcesses();
             } // if "processes"
-            
-            /*
-            *   if <object> is a "<PID>:<var_name>...", print the value of the variable(s) for that process
-            */
-            
+            //if <object> is a "<PID>:<var_name>...", print the value of the variable(s) for that process
+            else if (mmu.getProcess(std::stoi(token)) != NULL)  // verify the PID
+            { 
+                uint32_t pid = std::stoi(token);
+                token = strtok(NULL, " :");
+                // now verify the var name
+                if (mmu.getVariable(pid, token) != NULL) {
+                    Variable * var = mmu.getVariable(pid, token);
+                    for (int i = 0; i < var->values.size(); i++) {
+                        if (var->values[i] == NULL) {
+                            std::cout << "NULL";
+                        } else {
+                            std::cout << var->values[i];
+                        }
+
+                        if (i != (var->values.size() - 1)) {
+                            std::cout <<", ";
+                        }
+                    } // for
+                    std::cout << std::endl;
+                } else {
+                    std::cout << "Error: Invalid object." << std::endl;
+                }
+            } // //if <object> is a "<PID>:<var_name>...",
             else
             {
                 //invalid object
