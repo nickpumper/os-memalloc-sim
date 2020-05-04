@@ -4,11 +4,13 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 
 class PageTable {
 private:
     int _page_size;
     std::map<std::string, int> _table;
+    std::vector <int> frames;
 
 public:
     PageTable(int page_size);
