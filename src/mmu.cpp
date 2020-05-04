@@ -1,6 +1,7 @@
 #include "mmu.h"
 #include <map>
 #include <cmath>
+#include <cstring>
 
 Mmu::Mmu(int memory_size, int page_size)
 {
@@ -41,6 +42,7 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
 
     Process * process = getProcess(pid);
 
+
     //what variables should be supported?
     //int, long, float, double, char
     std::map<std::string, int> sizes;
@@ -79,7 +81,7 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
 
     var->virtual_address = page_num;
     var->virtual_address = var->virtual_address << offset_bits;
-    var->virtual_address = var->virtual_address | page_offset; // final result
+    var->virtual_address = var->virtual_address | page_offset; // final
 
     // required print: if not TEXT, GLOBALS, or STACK, then print virtual addr
     if ( (strcmp(name.c_str(), "<TEXT>") != 0) && (strcmp(name.c_str(), "<GLOBALS>") != 0) && (strcmp(name.c_str(), "<STACK>") != 0) ) {
@@ -129,22 +131,23 @@ void Mmu::print()
 
     std::cout << " PID  | Variable Name | Virtual Addr | Size" << std::endl;
     std::cout << "------+---------------+--------------+------------" << std::endl;
-    for (i = 0; i < _processes.size(); i++)
+    for (i = 1024; i < _next_pid; i++)
     {
-        uint32_t pid = _processes[i]->pid;
+        uint32_t pid = i;
+        Process * process = getProcess(pid);
 
-        for (j = 0; j < _processes[i]->variables.size(); j++)
+        for (j = 0; j < process->variables.size(); j++)
         {
             // print all variables (excluding <FREE_SPACE> entries)
 
             //print PID
-            std:: cout << pid << "  | ";
+            std:: cout << (process->pid) << "  | ";
             //print name
-            std::cout << _processes[i]->variables[j]->name << "   |";
+            std::cout << process->variables[j]->name << "   |";
             // print virtual addr
-            std::cout << "   0x" << std::hex << _processes[i]->variables[j]->virtual_address << " |";
+            std::cout << "   0x" << std::hex << process->variables[j]->virtual_address << " |";
             // print size
-            std::cout << "   " << _processes[i]->variables[j]->size;
+            std::cout << "   " << process->variables[j]->size;
 
             std::cout << std::endl;
         } // for j
