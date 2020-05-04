@@ -18,6 +18,7 @@ public:
 
     void addEntry(uint32_t pid, int page_number);
     int getPhysicalAddress(uint32_t pid, int virtual_address);
+    void deletePagesOfVar(uint32_t pid, std::string var_name);
     void removeEntry(uint32_t pid, int page_number);
     void print();
 };

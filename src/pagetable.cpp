@@ -46,6 +46,10 @@ void PageTable::addEntry(uint32_t pid, int page_number)
     std::cout << "Not enough memory for another entry." << std::endl;
 } // addEntry
 
+void PageTable::deletePagesOfVar(uint32_t pid, std::string var_name) {
+
+} // deletePagesOfVar
+
 void PageTable::removeEntry(uint32_t pid, int page_number)
 {
     std::string entry = std::to_string(pid) + "|" + std::to_string(page_number);

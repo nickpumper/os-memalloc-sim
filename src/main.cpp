@@ -149,6 +149,9 @@ int main(int argc, char **argv)
             // delete the var from the process
             mmu.freeVariable(pid, var->name);
 
+            // delete all pages associated with that variable
+            pagetable.deletePagesOfVar(pid, var_name);
+
         } // "free"
         else if (strcmp(token, "terminate")==0)
         {
@@ -159,9 +162,16 @@ int main(int argc, char **argv)
             token = strtok(NULL, " "); 
             uint32_t pid = std::stoi(token); //convert token to int 
 
-            mmu.deleteProcess(pid); // delete the process
+            Process * proc = mmu.getProcess(pid);
 
-            // delete all pages associated with it
+            // delete all pages associated with it's vars
+            for (int i = 0; i < proc->variables.size(); i++) {
+                Variable * var = proc->variables[i];
+                std::string name = var->name;
+                pagetable.deletePagesOfVar(pid, name);
+            }
+
+            mmu.deleteProcess(pid); // delete the process
                 
         } // "terminate"
         else if (strcmp(token, "print")==0)
