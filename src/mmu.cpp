@@ -1,8 +1,10 @@
 #include "mmu.h"
 #include <map>
 #include <cmath>
+#include <cstring>
+#include <string>
 
-Mmu::Mmu(int memory_size, int page_size)
+Mmu::Mmu(int memory_size, int page_size, uint8_t *memory)
 {
     _next_pid = 1024;
     _max_size = memory_size;
@@ -17,6 +19,7 @@ uint32_t Mmu::createProcess()
 {
     Process *proc = new Process();
     proc->pid = _next_pid;
+    proc->num_pages = 0;
     
     /*
     Variable *var = new Variable();
