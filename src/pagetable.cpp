@@ -55,7 +55,7 @@ void PageTable::removeEntry(uint32_t pid, int page_number)
         
         _table.erase(entry);
     }
-}
+} // removeEntry
 
 int PageTable::getPhysicalAddress(uint32_t pid, int virtual_address)
 {

@@ -95,7 +95,7 @@ int main(int argc, char **argv)
             // allocate memory
             // page_number isnt right yet: doesn't account for when we have enough vars that it foes over the page size
             int page_number = mmu.getProcess(pid)->variables.size() + 1;
-            pagetable.addEntry(pid, page_number);
+            // pagetable.addEntry(pid, page_number);
         } // "allocate"
         else if (strcmp(token, "set")==0)
         {
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
                 while (token != NULL && index < var->values.size())
                 {
                     var->values.at(index) = token;
-                    std::cout << "value " << index << " set to " << var->values[index] << std::endl;
+                    // std::cout << "value " << index << " set to " << var->values[index] << std::endl;
                     index++;
                     token = strtok(NULL, " "); 
                 } 
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
                 // now verify the var name
                 if (mmu.getVariable(pid, token) != NULL) {
                     Variable * var = mmu.getVariable(pid, token);
-                    for (int i = 0; i < var->values.size(); i++) {
+                    for (int i = 0; i < 4; i++) {
                         if (var->values[i] == NULL) {
                             std::cout << "NULL";
                         } else {
@@ -197,6 +197,11 @@ int main(int argc, char **argv)
 
                         if (i != (var->values.size() - 1)) {
                             std::cout <<", ";
+                        }
+
+                        // If variable has more than 4 elements, just print the first 4 followed by "... [N items]" (where N is the number of elements)
+                        if ((i == 3) && (var->values.size() > 4)) {
+                            std::cout << " ... [" << var->values.size() << " items]";
                         }
                     } // for
                     std::cout << std::endl;
