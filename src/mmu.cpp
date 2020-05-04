@@ -56,24 +56,30 @@ void Mmu::createVariable(uint32_t pid, std::string name, std::string type, int n
     var->type = type;
     var->size = sizes[type] * num;
     
-    
     for (int i = 0; i < num; i++)
     {
         var->values.push_back(NULL);
     }
 
-    // determine virtual address (WORK IN PROGRESS)
+    // determine virtual address 
     int offset_bits = log2(_page_size);
-    int sum_var_sizes = 0;
+    int sum_var_sizes;
+    int page_num;
+    int page_offset;
+
+    // get how much data this process already has
+    sum_var_sizes = 0;
     for (int i =0; i < process->variables.size(); i++) {
         sum_var_sizes = sum_var_sizes + process->variables[i]->size;
     } // for i
 
+    // now divide it by the page size to get which page we are at now
+    page_num = floor(sum_var_sizes / _page_size);
+    page_offset = sum_var_sizes % _page_size;
 
-
-    var->virtual_address = 0; // WIP
-    // var->virtual_address = var->virtual_address << log2()
-
+    var->virtual_address = page_num;
+    var->virtual_address = var->virtual_address << offset_bits;
+    var->virtual_address = var->virtual_address | page_offset; // final result
 
     // required print: if not TEXT, GLOBALS, or STACK, then print virtual addr
     if ( (strcmp(name.c_str(), "<TEXT>") != 0) && (strcmp(name.c_str(), "<GLOBALS>") != 0) && (strcmp(name.c_str(), "<STACK>") != 0) ) {
