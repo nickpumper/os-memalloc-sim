@@ -39,13 +39,12 @@ void PageTable::addEntry(uint32_t pid, int page_number)
             frames[i] = 1;
             return;
         }
-    }
+    } // for
     
     //if no free frame is found
     std::cout << "Not enough memory for another entry." << std::endl;
 } // addEntry
 
-/*
 void PageTable::removeEntry(uint32_t pid, int page_number)
 {
     std::string entry = std::to_string(pid) + "|" + std::to_string(page_number);
@@ -57,7 +56,6 @@ void PageTable::removeEntry(uint32_t pid, int page_number)
         _table.erase(entry);
     }
 }
-*/
 
 int PageTable::getPhysicalAddress(uint32_t pid, int virtual_address)
 {
