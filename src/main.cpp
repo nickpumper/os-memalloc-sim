@@ -60,11 +60,24 @@ int main(int argc, char **argv)
             //allocate <data_size> bytes of memory with variable name <GLOBALS>
             //allocate 65536 bytes of memory with variable name <STACK>
 
+            int page_number;
+            Variable * var;
+
             // DOUCLE CHECK THE TYPE
             mmu.createVariable(pid, "<TEXT>", "char", text_size); 
+            var = mmu.getVariable(pid, "<TEXT>");
+            page_number = pagetable.getPageNumberFromVirtualAddr(var->virtual_address);
+            pagetable.addEntry(pid, page_number);
+
             mmu.createVariable(pid, "<GLOBALS>", "char", data_size);
+            var = mmu.getVariable(pid, "<GLOBALS>");
+            page_number = pagetable.getPageNumberFromVirtualAddr(var->virtual_address);
+            pagetable.addEntry(pid, page_number);
+
             mmu.createVariable(pid, "<STACK>", "char", stack_size_constant);
-            
+            var = mmu.getVariable(pid, "<STACK>");
+            page_number = pagetable.getPageNumberFromVirtualAddr(var->virtual_address);
+            pagetable.addEntry(pid, page_number);
         } // "create"
         else if (strcmp(token, "allocate")==0)
         {
@@ -93,8 +106,8 @@ int main(int argc, char **argv)
             mmu.createVariable(pid, var_name, data_type, number_of_elements);
 
             // allocate memory
-            // page_number isnt right yet: doesn't account for when we have enough vars that it foes over the page size
-            int page_number = mmu.getProcess(pid)->variables.size() + 1;
+            Variable * var = mmu.getVariable(pid, var_name);
+            int page_number = pagetable.getPageNumberFromVirtualAddr(var->virtual_address);
             pagetable.addEntry(pid, page_number);
         } // "allocate"
         else if (strcmp(token, "set")==0)

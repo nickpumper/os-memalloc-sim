@@ -21,6 +21,7 @@ public:
     void deletePagesOfVar(uint32_t pid, std::string var_name);
     void removeEntry(uint32_t pid, int page_number);
     void print();
+    int getPageNumberFromVirtualAddr  (int virtual_addr) ;
 };
 
 #endif // __PAGETABLE_H_

@@ -46,6 +46,7 @@ void PageTable::addEntry(uint32_t pid, int page_number)
     std::cout << "Not enough memory for another entry." << std::endl;
 } // addEntry
 
+// deletes all of the var (notably vars that are arrays)
 void PageTable::deletePagesOfVar(uint32_t pid, std::string var_name) {
 
 } // deletePagesOfVar
@@ -75,7 +76,7 @@ int PageTable::getPhysicalAddress(uint32_t pid, int virtual_address)
     int offset_bits = log2(_page_size);
     
     int page_offset = virtual_address & ((1 << offset_bits) - 1);
-    int page_number = virtual_address >> offset_bits;
+    int page_number = getPageNumberFromVirtualAddr(virtual_address);
 
     // Combination of pid and page number act as the key to look up frame number
     //page table keeps track of what entry (pid and page number) corresponds to which frame
@@ -105,3 +106,8 @@ void PageTable::print()
         std::cout << " " << it->first << " | " << it->second << std::endl;
     }
 } // print
+
+int PageTable::getPageNumberFromVirtualAddr (int virtual_addr) {
+    int offset_bits = log2(_page_size);
+    return (virtual_addr >> offset_bits);
+} // getPageNumberFromVirtualAddr
