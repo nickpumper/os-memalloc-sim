@@ -142,6 +142,13 @@ int main(int argc, char **argv)
             // get variable name
             std::string var_name = strtok(NULL, " "); 
 
+            Variable * var = mmu.getVariable(pid, var_name);
+            Process * proc = mmu.getProcess(pid);
+            int virt_addr = var->virtual_address;
+    
+            // delete the var from the process
+            mmu.freeVariable(pid, var->name);
+
         } // "free"
         else if (strcmp(token, "terminate")==0)
         {

@@ -36,6 +36,7 @@ public:
     void print();
     void printProcesses ();
     void deleteProcess(uint32_t pid);
+    void freeVariable(uint32_t pid, std::string var_name);
 };
 
 

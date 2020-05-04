@@ -171,3 +171,16 @@ void Mmu::deleteProcess(uint32_t pid) {
         }
     } // for i
 } // deleteProcess
+
+// frees a var
+void Mmu::freeVariable(uint32_t pid, std::string var_name) {
+    Process * proc = getProcess(pid);
+
+    for (int i =0; i < proc->variables.size(); i++) {
+        Variable * var = proc->variables[i];
+        std::string name = var->name;
+        if (strcmp(name.c_str(), var_name.c_str()) == 0) {
+            proc->variables.erase(proc->variables.begin() + i);
+        }
+    } // for
+} //freeVariable
