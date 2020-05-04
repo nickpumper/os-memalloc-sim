@@ -188,7 +188,12 @@ int main(int argc, char **argv)
                 // now verify the var name
                 if (mmu.getVariable(pid, token) != NULL) {
                     Variable * var = mmu.getVariable(pid, token);
-                    for (int i = 0; i < 4; i++) {
+
+                    int limit = var->values.size();
+                    if (limit > 4) {
+                        limit = 4;
+                    }
+                    for (int i = 0; i < limit; i++) {
                         if (var->values[i] == NULL) {
                             std::cout << "NULL";
                         } else {

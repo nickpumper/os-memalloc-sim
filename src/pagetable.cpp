@@ -12,7 +12,7 @@ PageTable::PageTable(int page_size)
     size = 67108864 / _page_size;
     //std::cout << "Size is " << size << std::endl;
     
-    //we need to populate frames[]
+    //we need to populate frames[] with empty frames
     for (int i = 0 ; i < size; i++) {
         frames.push_back(0);
     } // for
