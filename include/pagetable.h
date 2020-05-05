@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "mmu.h"
 
 class PageTable {
 private:
@@ -18,7 +19,7 @@ public:
 
     void addEntry(uint32_t pid, int page_number);
     int getPhysicalAddress(uint32_t pid, int virtual_address);
-    void deletePagesOfVar(uint32_t pid, std::string var_name);
+    void deletePagesOfVar(uint32_t pid, Variable* var);
     void removeEntry(uint32_t pid, int page_number);
     void print();
     int getPageNumberFromVirtualAddr  (int virtual_addr) ;
