@@ -1,5 +1,6 @@
 #include "pagetable.h"
 #include <cmath>
+#include "mmu.h"
 
 PageTable::PageTable(int page_size)
 {
@@ -12,7 +13,7 @@ PageTable::PageTable(int page_size)
     size = 67108864 / _page_size;
     //std::cout << "Size is " << size << std::endl;
     
-    //we need to populate frames[] with empty frames
+    //we need to populate frames[] with empty frames 
     for (int i = 0 ; i < size; i++) {
         frames.push_back(0);
     } // for
@@ -47,8 +48,19 @@ void PageTable::addEntry(uint32_t pid, int page_number)
 } // addEntry
 
 // deletes all of the var (notably vars that are arrays)
-void PageTable::deletePagesOfVar(uint32_t pid, std::string var_name) {
-
+void PageTable::deletePagesOfVar(uint32_t pid, Variable* var) {
+    //delete page which virtual address is in
+    int page_number = getPageNumberFromVirtualAddr(var->virtual_address);
+    removeEntry(pid, page_number);
+    
+    //if variable is larger than page_size, delete next page and reduce var size by page_size, repeat
+    int temp_size = var->size;
+    while (temp_size > _page_size)
+    {
+        page_number++;
+        removeEntry(pid, page_number);
+        temp_size -= _page_size;
+    }
 } // deletePagesOfVar
 
 void PageTable::removeEntry(uint32_t pid, int page_number)
